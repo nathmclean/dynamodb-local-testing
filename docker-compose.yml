@@ -1,0 +1,6 @@
+dynamo:
+  build: .
+  ports:
+  - 9000:8000
+  command:
+    -sharedDb

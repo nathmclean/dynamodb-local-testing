@@ -94,14 +94,14 @@ func TestItemService_GetItem(t *testing.T) {
 	}
 }
 
-// newItemService sets up a new ItemService with new, randomely named Dynamo table, so that our tests don't collide.
+// newItemService sets up a new ItemService with new, randomly named Dynamo table, so that our tests don't collide.
 func newItemService() (*ItemService, error) {
 	tableName, err := test_utils.CreateTable(Item{})
 	if err != nil {
 		return nil, fmt.Errorf("failed to set up table. %s", err)
 	}
 
-	db, err := newDynamoTable(tableName, true)
+	db, err := newDynamoTable(tableName, "http://localhost:9000")
 	if err != nil {
 		return nil, err
 	}

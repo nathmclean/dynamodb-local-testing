@@ -25,7 +25,7 @@ type ItemService struct {
 
 // NewItemService creates a new item service with a dynamo client setup to talk to the provided table name
 func NewItemService(itemTableName string) (*ItemService, error) {
-	dynamoTable, err := newDynamoTable(itemTableName, false)
+	dynamoTable, err := newDynamoTable(itemTableName, "")
 	if err != nil {
 		return nil, err
 	}
@@ -36,14 +36,14 @@ func NewItemService(itemTableName string) (*ItemService, error) {
 
 // newDynamoTable creates a client that can interact with a specific Dynamo Table. Can optionally be setup to talk to dynamo
 // local, useful for testing.
-func newDynamoTable(tableName string, local bool) (dynamo.Table, error) {
+func newDynamoTable(tableName, endpoint string) (dynamo.Table, error) {
 	if tableName == "" {
 		return dynamo.Table{}, fmt.Errorf("you must supply a table name")
 	}
 	cfg := aws.Config{}
 	cfg.Region = aws.String("eu-west-2")
-	if local {
-		cfg.Endpoint = aws.String("http://localhost:9000")
+	if endpoint != "" {
+		cfg.Endpoint = aws.String(endpoint)
 	}
 	sess := session.Must(session.NewSession())
 	db := dynamo.New(sess, &cfg)
